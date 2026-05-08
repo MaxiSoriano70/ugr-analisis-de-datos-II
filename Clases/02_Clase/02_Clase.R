@@ -52,3 +52,58 @@ iris_train_output
 iris_test_dataset
 iris_test_output_real
 
+# ALGORITMO KNN
+# Carga de paquetes
+# Existen distintas librerias para utilizar este algoritmo en este caso utilizaremos "class"
+library(class)
+# help(knn)
+
+# Creamos el modelo
+
+iris_test_output_knn <- knn (
+  train = iris_train_dataset,
+  cl = iris_train_output,
+  test = iris_test_dataset,
+  k = 50
+)
+
+iris_test_output_knn
+
+# Elaboramos la matriz de confusión
+mc_knn <- table(iris_test_output_knn, iris_test_output_real)
+print(paste("Matriz de confusión:"))
+mc_knn
+
+# Calculamos el accuracy del modelo: aciertos/predicciones
+ac_knn <- mean(iris_test_output_knn == iris_test_output_real)
+print(paste("Accuracy: ", ac_knn))
+
+# En este tipo de algoritmos, es comun querer encontrar un valor de k vecinos óptimo
+set.seed(2023)
+k <- 1:100
+knn_kvalues <- data.frame(k, accuracy= 0)
+
+for(n in k){
+  iris_test_output_knn <- knn (
+    train = iris_train_dataset,
+    cl = iris_train_output,
+    test = iris_test_dataset,
+    k = n
+  )
+  knn_kvalues$accuracy[n] <- mean(iris_test_output_knn == iris_test_output_real)
+}
+
+# Visualización de resultados
+ggplot(knn_kvalues)+
+aes(k, accuracy)+ 
+geom_line(colour="blue", lwd = 1, alpha = 0.5) +
+geom_point(colour="black")+
+geom_smooth(colour="red", lwd = 0.5)+
+  theme(
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12)
+  )
+
+# Para consultar el data frame
+knn_kvalues
+
