@@ -204,3 +204,59 @@ ac_ad <- mean(iris_test_output_ad == iris_test_output_real)
 # /nrow(iris_test)
 print(paste("Accuracy: ", ac_ad))
 
+# ALGORITMO RANDOM FOREST
+# Instalar
+install.packages("randomForest")
+library(randomForest)
+# Ajustamos un modelo de Random forest
+iris_rf <- randomForest(iris_train_output ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+                        data = iris_train,
+                        ntree = 1000)
+
+# Visualizar el Random Forest
+plot(iris_rf)
+
+# Realizar la predicción cin el árbol de decisión en el conjunto de prueba
+iris_test_output_rf <- predict(iris_rf, iris_test)
+iris_test_output_rf
+
+# Recordar que ya estaba creado el vector de clases reales
+iris_test_output_real
+
+# Matriz de confusión
+mc_rf <- table(iris_test_output_real, iris_test_output_rf)
+print("Matriz de Confusión:")
+print(mc_rf)
+
+# Calcular la exactitud en el conjunto de prueba
+ac_rf <- mean(iris_test_output_rf == iris_test_output_real)
+
+# /nrow(iris_test)
+print(paste("Accuracy: ", ac_rf))
+
+# CALCULAR LA IMPORTANCIA DE KAS VARIABLES
+importancia_variables <- importance(iris_rf)
+
+# Mostrar la importancia de las variables
+print("Importancia de las Variables")
+print(importancia_variables)
+
+# Visualizar la importancia de las variables
+varImpPlot(
+  iris_rf,
+  main = "Importancia de Variable en el Modelo de Random Forest",
+  pch = 19, #Tipo de punto
+  col = "royalblue",
+  cex.axis = 0.8, #Tamaño de la fuente de ejes
+  cex.lab = 1.2
+)
+
+# Agregar una leyenda 
+legend("topright", #Posición de la leyenda
+       legend = c("Importancia"), #Etiqueta de la leyenda
+       fill = c("blue"), #Color de la leyenda
+       bty = "n") #Sincaja alrededor de la leyenda
+
+# tambien podemos visualizar sin personalizarlo
+varImpPlot(iris_rf)
+
