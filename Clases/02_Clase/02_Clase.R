@@ -107,3 +107,47 @@ geom_smooth(colour="red", lwd = 0.5)+
 # Para consultar el data frame
 knn_kvalues
 
+# ALGORITMO REGRESÓN LINEAL
+# Creamos el modelo de regresión lineal para clasificación con el set train
+iris_rLineal <- lm(Species ~ Petal.Length + Petal.Width, data = iris_train)
+
+# Predicción con el set 
+predicciones <- predict(iris_rLineal, newdata = iris_test)
+
+# Definir los limites para la clasificación
+limites <- c(0, quantile(predicciones, probs = c(0.33, 0.67, 1)))
+
+# Convertir las predicciones en clases
+iris_test_output_rLineal <- cut(predicciones, breaks = limites, labels = c("setosa", "versicolor", "virginica"))
+
+# Recordar que ya estaba creado el vector de clases reales
+iris_test_output_real
+
+# Matriz de confusión
+mc_rLineal <- table(iris_test_output_real, iris_test_output_rLineal)
+print("Matriz de confusión: ")
+print(mc_rLineal)
+
+# Accuracy
+ac_rLineal <- mean(iris_test_output_rLineal == iris_test_output_real)
+print(paste("Accuracy: ", ac_rLineal))
+
+# Gráfico
+library(ggplot2)
+
+ggplot(data = iris_train,
+       aes(x = Petal.Length,
+           y = Petal.Width,
+           color = Species)) +
+  geom_point() +
+  geom_abline(
+    intercept = coef(iris_rLineal)[1],
+    slope = coef(iris_rLineal)[2],
+    color = "red",
+    lwd = 0.5
+  ) +
+  labs(
+    title = "Regresión Lineal para Clasificación",
+    x = "Petal Length",
+    y = "Petal Width"
+  )
