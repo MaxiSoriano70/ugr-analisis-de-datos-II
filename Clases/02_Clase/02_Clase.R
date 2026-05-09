@@ -151,3 +151,22 @@ ggplot(data = iris_train,
     x = "Petal Length",
     y = "Petal Width"
   )
+
+# ALGORITMO ÁRBOL
+
+# Carga de paquetes
+install.packages("rpart")
+library(rpart)
+
+install.packages("rpart.plot")
+library(rpart.plot)
+
+# Crear árbol de decisión
+iris_ad <- rpart(
+  Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+  data = iris,
+  method = "class"
+)
+
+# Visualización del árbol
+rpart.plot(iris_ad, type = 2, extra = 1)
