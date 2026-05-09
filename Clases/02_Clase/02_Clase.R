@@ -170,3 +170,37 @@ iris_ad <- rpart(
 
 # Visualización del árbol
 rpart.plot(iris_ad, type = 2, extra = 1)
+
+# -----------
+# Para realizar un árbol de decisión para la clasificación a partir de un conjunto de entrenaiento
+# Crear un árbol de decisión con rpart.plot
+iris_ad <- rpart(
+  Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width,
+  data = iris_train,
+  method = "class"
+)
+
+# Visualizar el árbol de decisión con rpart.plot
+rpart.plot(iris_ad, type = 2, extra = 1)
+
+# Realizar las predicciones con el árbol de decisión en el conjunto de prueba
+iris_test_output_ad <- predict(
+  iris_ad,
+  iris_test,
+  type = "class"
+)
+
+# Recordar que ya estaba creado elvectro de clases reales
+iris_test_output_real
+
+# Matriz de confusión
+mc_ad <- table(iris_test_output_real, iris_test_output_ad)
+print("Matriz de Confusión:")
+print(mc_ad)
+
+# Calcular la exactitud en el conjunto de prueba
+ac_ad <- mean(iris_test_output_ad == iris_test_output_real)
+
+# /nrow(iris_test)
+print(paste("Accuracy: ", ac_ad))
+
