@@ -260,3 +260,57 @@ legend("topright", #Posición de la leyenda
 # tambien podemos visualizar sin personalizarlo
 varImpPlot(iris_rf)
 
+# ALGORITMO NAIVE BAYES
+install.packages("ggplot2")
+library(ggplot2)
+
+ggplot()
+aes()
+geom_point()
+theme()
+element_text()
+
+
+install.packages("e1071")
+library(e1071)
+
+# Crea un modelo de Naive Bayes
+iris_nb <- naiveBayes(Species ~ ., data = iris_train)
+
+# Realiza predicciones en el conjunto de prueba
+iris_test_output_nb <- predict(iris_nb, iris_test)
+
+# Matriz de confusión
+mc_nb <- table(iris_test_output_real, iris_test_output_nb)
+print("Matriz de Confusión:")
+print(mc_nb)
+
+# Calcular la exactitud en el conjunto de prueba
+ac_nb <- mean(iris_test_output_nb == iris_test_output_real)
+
+# /nrow(iris_test)
+print(paste("Accuracy: ", ac_nb))
+
+# Crear un nuevo dataframe con las predicciones y las caracteristicas originales
+iris_test_output_nb_results <- data.frame(iris_test, Prediccion = iris_test_output_nb)
+
+# Grafico
+plot_nb <- ggplot(iris_test_output_nb_results,
+                  aes(x = Sepal.Length,
+                      y = Sepal.Width,
+                      color = Species,
+                      shape = Prediccion)) +
+  geom_point(size = 3) + #Aumenta el tamaño de los puntos
+  ggtitle("Clasificación con Naive Bayes en Conjunto de los puntos") +
+  labs(
+    color = "Real",
+    shape = "Predicción",
+    x = "Largo del Sépalo",#Ajusta el nombre del eje X
+    y = "Ancho del Sépalo"#Ajusta el nombre del eje Y
+  ) +
+  theme(
+    axis.text = element_text(size = 12), #Ajusta el tamaño del texto de los ejes
+    axis.title = element_text(size = 14) #Ajusta el tamaño del titulo de los ejes
+  )
+
+plot_nb
