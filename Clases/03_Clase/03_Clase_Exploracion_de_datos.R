@@ -7,7 +7,7 @@ library(ggplot2)
 library(readr)
 
 # Llamo al archivo con el que voy a trabajar
-base <- read.csv("produccion-de-pozos-de-gas-y-petroleo-no-convencional.csv", 
+base <- read.csv("C:/Users/MAXY 70/Documents/Ciencia_de_datos_UGR/Clases/03_Clase/produccion-de-pozos-de-gas-y-petroleo-no-convencional.csv", 
                  header = TRUE, 
                  sep = ",", 
                  encoding = "UTF-8")
